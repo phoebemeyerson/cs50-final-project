@@ -21,7 +21,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///finance.db")
+db = SQL("sqlite:///noms.db")
 
 @app.after_request
 def after_request(response):
@@ -130,7 +130,7 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-    return apology("TODO")
+    return(apology("TODO"))
 
 def errorhandler(e):
     """Handle error"""
