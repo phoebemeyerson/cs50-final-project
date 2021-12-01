@@ -35,17 +35,17 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    return(apology("TODO"))
+    return(render_template("index.html"))
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def add_ingredient():
-    return(apology("TODO"))
+    return(redirect("/"))
 
 @app.route("/history")
 @login_required
 def favorites():
-    return(apology("TODO"))
+    return(redirect("/"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -125,12 +125,6 @@ def register():
     # When requested via GET, display registration form
     else:
         return render_template("register.html")
-
-
-@app.route("/sell", methods=["GET", "POST"])
-@login_required
-def sell():
-    return(apology("TODO"))
 
 def errorhandler(e):
     """Handle error"""
