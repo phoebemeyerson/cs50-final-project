@@ -130,7 +130,7 @@ def register():
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
-
+    return apology("TODO")
 
 def errorhandler(e):
     """Handle error"""
