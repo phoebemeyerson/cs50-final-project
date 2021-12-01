@@ -37,10 +37,20 @@ def after_request(response):
 def index():
     return(render_template("index.html"))
 
-@app.route("/buy", methods=["GET", "POST"])
+@app.route("/recipes", methods=["GET", "POST"])
 @login_required
-def add_ingredient():
-    return(redirect("/"))
+def find_recipes():
+    if request.method == "POST":
+        return(redirect("/"))
+    else:
+        all_ingredients_raw = db.execute("SELECT ingredient_name FROM ingredients")
+        all_ingredients = []
+
+        for ingredient in all_ingredients_raw:
+            all_ingredients.append(ingredient['ingredient_name'])
+
+        print(all_ingredients)
+        return(render_template("recipes.html", ingredients=all_ingredients))
 
 @app.route("/history")
 @login_required

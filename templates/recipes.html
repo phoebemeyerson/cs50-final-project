@@ -5,11 +5,14 @@
 {% endblock %}
 
 {% block main %}
-<form action="/recipe" method="post">
+<form action="/recipes" method="post">
+    <h1>Select Ingredients</h1>
     <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="ingredient" name="ingredient" placeholder="Ingredient" type="text">
+        {% for ingredient in ingredients %}
+            <input name="ingredient" type="checkbox" value="{{ ingredient }}">{{ ingredient }}
+        {% endfor %}
     </div>
-    <button class="btn btn-primary" type="submit">Add to Pantry</button>
+    <button class="btn btn-primary" type="submit">Show me recipes!!</button>
 </form>
 
 {% endblock %}
