@@ -41,7 +41,11 @@ def index():
 @login_required
 def find_recipes():
     if request.method == "POST":
-        return(redirect("/"))
+        ingredients = request.form.getlist("ingredient")
+        for ingredient in ingredients:
+            recipes = db.execute("SELECT recipe_name FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM cooking_ingredients WHERE ingredient_id IN (SELECT ingredient_id FROM ingredients WHERE ingredient_name = ?", ingredient)
+            print(recipes)
+        return(render_template("cook.html"))
     else:
         all_ingredients_raw = db.execute("SELECT ingredient_name FROM ingredients")
         all_ingredients = []
@@ -49,7 +53,6 @@ def find_recipes():
         for ingredient in all_ingredients_raw:
             all_ingredients.append(ingredient['ingredient_name'])
 
-        print(all_ingredients)
         return(render_template("recipes.html", ingredients=all_ingredients))
 
 @app.route("/history")
