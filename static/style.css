@@ -24,10 +24,15 @@ nav .navbar-brand .green
 
 body
 {
-    background-color: #520a0a;
+    /* background-color: #520a0a; */
+    background-image: url("pexels-photo-1640774.jpeg");
+    height: 100%;
+
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 main
 {
-    background-color:aliceblue;
+    /* background-color:aliceblue; */
 }
