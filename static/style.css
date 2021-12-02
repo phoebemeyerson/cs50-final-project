@@ -1,33 +1,42 @@
 /* Size for brand */
-nav .navbar-brand
-{
+nav .navbar-brand {
     font-size: xx-large;
 }
 
 /* Colors for brand */
-nav .navbar-brand .blue
-{
+nav .navbar-brand .blue {
     color: #9e1622;
 }
-nav .navbar-brand .red
-{
+nav .navbar-brand .red {
     color: #520a0a;
 }
-nav .navbar-brand .yellow
-{
+nav .navbar-brand .yellow {
     color: #a53919;
 }
-nav .navbar-brand .green
-{
+nav .navbar-brand .green {
     color: #802721;
 }
 
-body
-{
-    /* background-color: #520a0a; */
-    background-image: url("pexels-photo-1640774.jpeg");
+body {
+    background-image: url("food.jpg");
     height: 100%;
 
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+
+    color: white
+}
+
+a {
+    color: #cf522c;
+}
+
+.btn {
+    border: 2px solid rgb(160, 156, 156);
+    background-color: #cf522c;
+    color: white;
+    padding: 14px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }

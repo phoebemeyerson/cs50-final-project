@@ -87,7 +87,7 @@ def find_recipes():
         # Render recipes template, passing ingredients
         return(render_template("recipes.html", ingredients=all_ingredients))
 
-@app.route("/history")
+@app.route("/favorites", methods=["GET", "POST"])
 @login_required
 def favorites():
     return(redirect("/"))
