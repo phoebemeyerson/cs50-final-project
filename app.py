@@ -44,9 +44,23 @@ def find_recipes():
         ingredients = request.form.getlist("ingredient")
         print(ingredients)
         for ingredient in ingredients:
-            recipes = db.execute("SELECT recipe_name FROM recipes WHERE id IN (SELECT recipe_id FROM cooking_ingredients WHERE ingredient_id IN (SELECT id FROM ingredients WHERE ingredient_name = ?))", ingredient)
-            print(recipes)
-        return(render_template("cook.html", ingredients=ingredients))
+            recipes = db.execute("SELECT recipe_name, url FROM recipes WHERE id IN (SELECT recipe_id FROM cooking_ingredients WHERE ingredient_id IN (SELECT id FROM ingredients WHERE ingredient_name = ?))", ingredient)
+        print(recipes)
+
+        
+
+        all_recipes = db.execute("SELECT recipe_name FROM recipes")
+        print(all_recipes)
+        for recipe in all_recipes:
+            recipe_ingredients = db.execute("SELECT ingredient_name FROM ingredients WHERE id IN (SELECT ingredient_id FROM cooking_ingredients WHERE recipe_id = (SELECT id FROM recipes WHERE recipe_name = ?))", recipe['recipe_name'])
+            print(recipe_ingredients)
+            for ingredient in recipe_ingredients:
+                if ingredient['ingredient_name'] not in ingredients:
+                    all_recipes.remove(recipe)
+
+        print(all_recipes)
+
+        return(render_template("cook.html", ingredients=ingredients, recipes=all_recipes))
     else:
         all_ingredients_raw = db.execute("SELECT ingredient_name FROM ingredients")
         all_ingredients = []

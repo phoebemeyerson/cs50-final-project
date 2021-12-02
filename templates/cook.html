@@ -5,9 +5,25 @@
 {% endblock %}
 
 {% block main %}
-<h1>Recipes with ingredients
-    {% for ingredient in ingredients %}
-        {{ ingredient }}
-    {% endfor %}
+<h1>Recipes with ingredients:
+    
 </h1>
+        <table class="table table-bordered">
+          <thead class="table">
+            <tr>
+              <th>{% for ingredient in ingredients %}
+                ~ {{ ingredient }} ~
+                {% endfor %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              {% for recipe in recipes %}
+                    <td><a href=" {{ recipe['url'] }} "> {{ recipe['recipe_name'] }} </a> </td>
+                  {% endfor %} 
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </body>
 {% endblock %}
