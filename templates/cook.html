@@ -5,5 +5,9 @@
 {% endblock %}
 
 {% block main %}
-
+<h1>Recipes with ingredients
+    {% for ingredient in ingredients %}
+        {{ ingredient }}
+    {% endfor %}
+</h1>
 {% endblock %}

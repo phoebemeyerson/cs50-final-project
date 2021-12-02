@@ -46,7 +46,7 @@ def find_recipes():
         for ingredient in ingredients:
             recipes = db.execute("SELECT recipe_name FROM recipes WHERE id IN (SELECT recipe_id FROM cooking_ingredients WHERE ingredient_id IN (SELECT id FROM ingredients WHERE ingredient_name = ?))", ingredient)
             print(recipes)
-        return(render_template("cook.html"))
+        return(render_template("cook.html", ingredients=ingredients))
     else:
         all_ingredients_raw = db.execute("SELECT ingredient_name FROM ingredients")
         all_ingredients = []
