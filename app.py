@@ -49,7 +49,7 @@ def find_recipes():
         # Get all recipes from SQL database
         all_recipes = db.execute("SELECT recipe_name FROM recipes")
 
-        # Make copy so that for loop works 
+        # Make copy of all recipes
         copy = all_recipes.copy()
 
         # Iterate through each recipe and get ingredients in each recipe
