@@ -40,34 +40,51 @@ def index():
 @app.route("/recipes", methods=["GET", "POST"])
 @login_required
 def find_recipes():
+    # If user reaches route via POST
     if request.method == "POST":
-        ingredients = request.form.getlist("ingredient")
-        print(ingredients)
-        for ingredient in ingredients:
-            recipes = db.execute("SELECT recipe_name, url FROM recipes WHERE id IN (SELECT recipe_id FROM cooking_ingredients WHERE ingredient_id IN (SELECT id FROM ingredients WHERE ingredient_name = ?))", ingredient)
-        print(recipes)
-
         
+        # Get list of ingredients from form
+        ingredients = request.form.getlist("ingredient")
 
+        # Get all recipes from SQL database
         all_recipes = db.execute("SELECT recipe_name FROM recipes")
-        print(all_recipes)
-        for recipe in all_recipes:
+
+        # Make copy so that for loop works 
+        copy = all_recipes.copy()
+
+        # Iterate through each recipe and get ingredients in each recipe
+        for recipe in copy:
             recipe_ingredients = db.execute("SELECT ingredient_name FROM ingredients WHERE id IN (SELECT ingredient_id FROM cooking_ingredients WHERE recipe_id = (SELECT id FROM recipes WHERE recipe_name = ?))", recipe['recipe_name'])
-            print(recipe_ingredients)
+            
+            # Iterate through each ingredient in the recipe
             for ingredient in recipe_ingredients:
+                
+                # Check whether each ingredient in the recipe has been checked off by user
                 if ingredient['ingredient_name'] not in ingredients:
-                    all_recipes.remove(recipe)
 
-        print(all_recipes)
+                    # If ingredient has not been selected, remove recipe from all recipes if list not empty
+                    if recipe in all_recipes:
+                        all_recipes.remove(recipe)
 
+        # Render template to display recipes with owned ingredients
         return(render_template("cook.html", ingredients=ingredients, recipes=all_recipes))
+    
+    # If user reaches route via GET
     else:
+        
+        # Select all ingredients from SQL database
         all_ingredients_raw = db.execute("SELECT ingredient_name FROM ingredients")
+        
+        # Initialize empty list
         all_ingredients = []
 
+        # Iterate through each item in raw ingredient list
         for ingredient in all_ingredients_raw:
+            
+            # Add each ingredient to ingredients list, extracting value from dictionary
             all_ingredients.append(ingredient['ingredient_name'])
 
+        # Render recipes template, passing ingredients
         return(render_template("recipes.html", ingredients=all_ingredients))
 
 @app.route("/history")
