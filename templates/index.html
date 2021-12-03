@@ -5,12 +5,22 @@
 {% endblock %}
 
 {% block main %}
-<h1 >Welcome to NOMS.</h1>
+<div>
+    <h1 class="welcome">Welcome to NOMS.</h1>
+</div>
+<div>
+    <h4 class="description">The food website for Harvard  college students.</h4>
+</div>
+
+<hr>
+<div>
+    <button class="btn btn-primary"><a href="{{ random_recipe['url'] }}">Give me a random recipe!</a></button>
+</div>
+<hr>
 <div class="about">
-    <h4>The food website for Harvard  college students.</h4>
     <p>Search for simple <a href=/recipes>recipes</a> with ingredients from your pantry.</p>
     <p>Explore students' favorite Cambridge <a href=/restaurants>restaurants</a>.</p>
     <p>Save your <a href=/favorites>favorite</a> recipes and restaurants to enjoy later.</p>
-    <p>Learn about natural remedies to <a href=/wellness>health</a>.</p>
+    <p>See what the dining halls are <a href=/huds>serving</a> this week.</p>
 </div>
 {% endblock %}

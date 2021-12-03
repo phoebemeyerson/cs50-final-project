@@ -35,7 +35,9 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
-    return(render_template("index.html"))
+    random_recipe = db.execute("SELECT recipe_name, url FROM recipes ORDER BY RANDOM()")[0]
+    print(random_recipe)
+    return(render_template("index.html", random_recipe=random_recipe))
 
 @app.route("/recipes", methods=["GET", "POST"])
 @login_required
@@ -124,6 +126,11 @@ def delete_favorites():
     else:
         favorites = db.execute("SELECT recipe_name FROM recipes WHERE id IN (SELECT recipe_id FROM favorites WHERE user_id = ?)", user_id)
         return(render_template("delete_favorites.html", favorites=favorites))
+
+@app.route("/huds")
+@login_required
+def huds():
+    return(redirect("https://dining.harvard.edu/campus-dining/undergraduate-dining/weeks-menu"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
