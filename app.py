@@ -47,7 +47,7 @@ def find_recipes():
         ingredients = request.form.getlist("ingredient")
 
         # Get all recipes from SQL database
-        all_recipes = db.execute("SELECT recipe_name FROM recipes")
+        all_recipes = db.execute("SELECT recipe_name, url FROM recipes")
 
         # Make copy of all recipes
         copy = all_recipes.copy()
@@ -93,7 +93,8 @@ def favorites():
     # Get user id
     user_id = session["user_id"]
 
-    favorites = []
+    favorites = db.execute("SELECT recipe_name, url FROM recipes WHERE id IN (SELECT DISTINCT recipe_id FROM favorites WHERE user_id = ?)", user_id)
+    print(favorites)
     return(render_template("favorites.html", favorites=favorites))
 
 @app.route("/add_favorites", methods=["GET", "POST"])
@@ -114,10 +115,13 @@ def add_favorites():
 @app.route("/delete_favorites", methods=["GET", "POST"])
 @login_required
 def delete_favorites():
+    user_id = session["user_id"]
     if request.method == "POST":
-        return(render_template("favorites.html"))
+        delete_name = request.form.get("delete-favorites")
+        delete_id = db.execute("SELECT id FROM recipes WHERE recipe_name = ?", delete_name)
+        db.execute("DELETE FROM favorites WHERE recipe_id = ?", delete_id[0]['id'])
+        return(redirect("/favorites"))
     else:
-        user_id = session["user_id"]
         favorites = db.execute("SELECT recipe_name FROM recipes WHERE id IN (SELECT recipe_id FROM favorites WHERE user_id = ?)", user_id)
         return(render_template("delete_favorites.html", favorites=favorites))
 

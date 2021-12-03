@@ -7,8 +7,8 @@
 {% block main %}
 <form action="/delete_favorites" method="post">
     <div class="mb-3">
-        <select autocomplete="off" autofocus class="form-control mx-auto w-auto" id="add-favorites" name="add-favorites" placeholder="Add Favorites" type="text">
-            <option disabled selected>Add Favorites</option>
+        <select autocomplete="off" autofocus class="form-control mx-auto w-auto" id="delete-favorites" name="delete-favorites" placeholder="Delete Favorites" type="text">
+            <option disabled selected>Delete Favorites</option>
             {% for favorite in favorites %}
                 <option>{{ favorite['recipe_name'] }}</option>
             {% endfor %}
