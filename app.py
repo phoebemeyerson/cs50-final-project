@@ -87,28 +87,39 @@ def find_recipes():
         # Render recipes template, passing ingredients
         return(render_template("recipes.html", ingredients=all_ingredients))
 
-# @app.route("/favorites", methods=["GET", "POST"])
-# @login_required
-# def favorites():
-#     # Get user id
-#     user_id = session["user_id"]
+@app.route("/favorites", methods=["GET", "POST"])
+@login_required
+def favorites():
+    # Get user id
+    user_id = session["user_id"]
 
-#     favorites = []
-#     return(render_template("favorites.html", favorites=favorites))
+    favorites = []
+    return(render_template("favorites.html", favorites=favorites))
 
-# @app.route("/add_favorites", methods=["GET", "POST"])
-# @login_required
-# def add_favorites():
-#     if request.method == "POST":
-#         return(render_template("favorites.html"))
-#     else:
-#         all_recipes = db.execute("SELECT recipe_name FROM recipes")
-#         return(render_template("add_favorites.html", recipes=all_recipes))
+@app.route("/add_favorites", methods=["GET", "POST"])
+@login_required
+def add_favorites():
+    if request.method == "POST":
+        user_id = session["user_id"]
+        favorite = request.form.get("add-favorites")
+        favorite_id = db.execute("SELECT id FROM recipes WHERE recipe_name = ?", favorite)
+        print(favorite_id)
+        db.execute("INSERT INTO favorites ('user_id', 'recipe_id') VALUES (?, ?)", user_id, favorite_id[0]['id'])
+
+        return(redirect("/favorites"))
+    else:
+        all_recipes = db.execute("SELECT recipe_name FROM recipes")
+        return(render_template("add_favorites.html", recipes=all_recipes))
 
 @app.route("/delete_favorites", methods=["GET", "POST"])
 @login_required
 def delete_favorites():
-    return(redirect("/"))
+    if request.method == "POST":
+        return(render_template("favorites.html"))
+    else:
+        user_id = session["user_id"]
+        favorites = db.execute("SELECT recipe_name FROM recipes WHERE id IN (SELECT recipe_id FROM favorites WHERE user_id = ?)", user_id)
+        return(render_template("delete_favorites.html", favorites=favorites))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
