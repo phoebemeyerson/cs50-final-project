@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Favorites
+{% endblock %}
+
+{% block main %}
+<form action="/sell" method="post">
+    <div class="mb-3">
+        <select autocomplete="off" autofocus class="form-control mx-auto w-auto" id="add-favorites" name="add-favorites" placeholder="Add Favorites" type="text">
+            <option disabled selected>Add Favorites</option>
+            {% for recipe in recipes %}
+                <option>{{ recipe }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Add Recipe to Favorites</button>
+</form>
+
+{% endblock %}

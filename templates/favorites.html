@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Favorites
+{% endblock %}
+
+{% block main %}
+<table class="table tablestriped">
+    <thead>
+        <tr>
+            <th class="text-start">Favorites Recipes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for favorite in favorites %}
+        <tr>
+            <a href="{{ favorite['url'] }}">{{ favorite['recipe_name'] }}</a>
+        </tr>
+        {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+<button class="btn btn-primary"><a class="nav-link" href="/add_favorites">Add Favorites</a></button>
+<button class="btn btn-primary"><a class="nav-link" href="/delete_favorites">Delete Favorites</a></button>
+
+{% endblock %}

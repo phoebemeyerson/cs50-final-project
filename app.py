@@ -87,9 +87,27 @@ def find_recipes():
         # Render recipes template, passing ingredients
         return(render_template("recipes.html", ingredients=all_ingredients))
 
-@app.route("/favorites", methods=["GET", "POST"])
+# @app.route("/favorites", methods=["GET", "POST"])
+# @login_required
+# def favorites():
+#     # Get user id
+#     user_id = session["user_id"]
+
+#     favorites = []
+#     return(render_template("favorites.html", favorites=favorites))
+
+# @app.route("/add_favorites", methods=["GET", "POST"])
+# @login_required
+# def add_favorites():
+#     if request.method == "POST":
+#         return(render_template("favorites.html"))
+#     else:
+#         all_recipes = db.execute("SELECT recipe_name FROM recipes")
+#         return(render_template("add_favorites.html", recipes=all_recipes))
+
+@app.route("/delete_favorites", methods=["GET", "POST"])
 @login_required
-def favorites():
+def delete_favorites():
     return(redirect("/"))
 
 @app.route("/login", methods=["GET", "POST"])
