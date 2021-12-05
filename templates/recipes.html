@@ -8,11 +8,11 @@
 <form action="/recipes" method="post">
     <h1>Select Ingredients</h1>
     <ul class="navbar-nav me-auto mt-2">
+    <div class="mb-3">
         {% for ingredient in ingredients %}
-        <div class="mb-3">
-            <input name="ingredient" type="checkbox" value="{{ ingredient }}"> {{ ingredient }}
-        </div>
+        <input name="ingredient" type="checkbox" value="{{ ingredient }}"> {{ ingredient }}
         {% endfor %}
+    </div>
     </ul>
     <button class="btn btn-primary" type="submit">Show me recipes!!</button>
 </form>

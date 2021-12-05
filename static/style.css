@@ -42,6 +42,7 @@ a {
 
 .btn a {
     color: white;
+    text-decoration: none;
 }
 
 .welcome {
