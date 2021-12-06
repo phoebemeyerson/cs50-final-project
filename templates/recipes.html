@@ -10,7 +10,7 @@
     <ul class="navbar-nav me-auto mt-2">
     <div class="mb-3">
         {% for ingredient in ingredients %}
-        <input name="ingredient" type="checkbox" value="{{ ingredient }}"> {{ ingredient }}
+        <input name="ingredient" type="checkbox" value="{{ ingredient['ingredient_name'] }}"> {{ ingredient['ingredient_name'] }}
         {% endfor %}
     </div>
     </ul>
