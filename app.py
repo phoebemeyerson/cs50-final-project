@@ -35,23 +35,41 @@ def after_request(response):
 @app.route("/")
 @login_required
 def index():
+    
+    # Get random recipe for button on website
     random_recipe = db.execute("SELECT recipe_name, url FROM recipes ORDER BY RANDOM()")[0]
+
+    # Return index template
     return(render_template("index.html", random_recipe=random_recipe))
 
 @app.route("/restaurants", methods=["GET", "POST"])
 @login_required
 def find_restaurants():
+    
+    # If user reaches route via POST
     if request.method == "POST":
+        
+        # Get value of cuisine selected in form
         cuisine = request.form.get("cuisine")
+        
+        # If user selects any cuisine, select all restaurants
         if cuisine == "Any cuisine":
             restaurants = db.execute("SELECT * FROM restaurants")
+        
+        # If user selects certain cuisine, select restaurants with selected cuisine type
         else:
             restaurants = db.execute("SELECT * FROM restaurants WHERE cuisine = ?", cuisine)
-        for restaurant in restaurants:
-            print(restaurant['photo'])
+        
+        # Render template showing all restaurant choices
         return(render_template("restaurant_choice.html", restaurants=restaurants))
+    
+    # If user reaches route via GET
     else:
-        cuisines = db.execute("SELECT cuisine FROM restaurants")
+        
+        # Select each distinct cuisine from restaurants table
+        cuisines = db.execute("SELECT DISTINCT cuisine FROM restaurants")
+        
+        # Render template showing form with all cuisines
         return(render_template("restaurants.html", cuisines=cuisines))
 
 @app.route("/recipes", methods=["GET", "POST"])
@@ -104,41 +122,76 @@ def find_recipes():
         # Render recipes template, passing ingredients
         return(render_template("recipes.html", ingredients=all_ingredients))
 
-@app.route("/favorites", methods=["GET", "POST"])
+@app.route("/favorites")
 @login_required
 def favorites():
     # Get user id
     user_id = session["user_id"]
 
+    # Select all recipe names and links that the user has favorited 
     favorites = db.execute("SELECT recipe_name, url FROM recipes WHERE id IN (SELECT DISTINCT recipe_id FROM favorites WHERE user_id = ?)", user_id)
+    
+    # Render template with table of favorites
     return(render_template("favorites.html", favorites=favorites))
 
 @app.route("/add_favorites", methods=["GET", "POST"])
 @login_required
 def add_favorites():
+    
+    # If user reaches route via POST
     if request.method == "POST":
+        
+        # Get user id
         user_id = session["user_id"]
+        
+        # Get value from form
         favorite = request.form.get("add-favorites")
+        
+        # Select id of recipe that user wants to add to their favorites
         favorite_id = db.execute("SELECT id FROM recipes WHERE recipe_name = ?", favorite)
-        print(favorite_id)
+
+        # Insert id into favorites table along with user's id
         db.execute("INSERT INTO favorites ('user_id', 'recipe_id') VALUES (?, ?)", user_id, favorite_id[0]['id'])
 
+        # Redirect to favorites page, updating with new added favorite
         return(redirect("/favorites"))
+
+    # If user reaches route via GET
     else:
+
+        # Display form with all recipes
         all_recipes = db.execute("SELECT recipe_name FROM recipes")
+
+        # Render template showing dropdown of every recipe
         return(render_template("add_favorites.html", recipes=all_recipes))
 
 @app.route("/delete_favorites", methods=["GET", "POST"])
 @login_required
 def delete_favorites():
+
+    # Get user id
     user_id = session["user_id"]
+
+    # If user reaches route via POST
     if request.method == "POST":
+
+        # Get value from form
         delete_name = request.form.get("delete-favorites")
+
+        # Select id of recipe that user wants to delete from favorites and perform SQL query to delete
         delete_id = db.execute("SELECT id FROM recipes WHERE recipe_name = ?", delete_name)
         db.execute("DELETE FROM favorites WHERE recipe_id = ?", delete_id[0]['id'])
+        
+        # Redirect to favorites
         return(redirect("/favorites"))
+    
+    # If user reaches route via GET
     else:
+        
+        # Select all recipes that user has favorited
         favorites = db.execute("SELECT recipe_name FROM recipes WHERE id IN (SELECT recipe_id FROM favorites WHERE user_id = ?)", user_id)
+        
+        # Render template showing all favorites of user
         return(render_template("delete_favorites.html", favorites=favorites))
 
 @app.route("/huds")
