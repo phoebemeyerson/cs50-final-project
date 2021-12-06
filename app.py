@@ -101,6 +101,10 @@ def find_recipes():
                     if recipe in all_recipes:
                         all_recipes.remove(recipe)
 
+        print(all_recipes)
+        if all_recipes == []:
+            return(apology("No recipes found. Try adding more ingredients!"))
+
         # Render template to display recipes with owned ingredients
         return(render_template("cook.html", ingredients=ingredients, recipes=all_recipes))
     
