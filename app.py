@@ -37,10 +37,13 @@ def after_request(response):
 def index():
     
     # Get random recipe for button on website
-    random_recipe = db.execute("SELECT recipe_name, url FROM recipes ORDER BY RANDOM()")[0]
+    random_recipe = db.execute("SELECT url FROM recipes ORDER BY RANDOM()")[0]
+
+    # Get random restaurant for button on website
+    random_restaurant = db.execute("SELECT url FROM restaurants ORDER BY RANDOM()")[0]
 
     # Return index template
-    return(render_template("index.html", random_recipe=random_recipe))
+    return(render_template("index.html", random_recipe=random_recipe, random_restaurant=random_restaurant))
 
 @app.route("/restaurants", methods=["GET", "POST"])
 @login_required
