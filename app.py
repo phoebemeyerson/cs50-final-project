@@ -36,8 +36,23 @@ def after_request(response):
 @login_required
 def index():
     random_recipe = db.execute("SELECT recipe_name, url FROM recipes ORDER BY RANDOM()")[0]
-    print(random_recipe)
     return(render_template("index.html", random_recipe=random_recipe))
+
+@app.route("/restaurants", methods=["GET", "POST"])
+@login_required
+def find_restaurants():
+    if request.method == "POST":
+        cuisine = request.form.get("cuisine")
+        if cuisine == "Any cuisine":
+            restaurants = db.execute("SELECT * FROM restaurants")
+        else:
+            restaurants = db.execute("SELECT * FROM restaurants WHERE cuisine = ?", cuisine)
+        for restaurant in restaurants:
+            print(restaurant['photo'])
+        return(render_template("restaurant_choice.html", restaurants=restaurants))
+    else:
+        cuisines = db.execute("SELECT cuisine FROM restaurants")
+        return(render_template("restaurants.html", cuisines=cuisines))
 
 @app.route("/recipes", methods=["GET", "POST"])
 @login_required
@@ -96,7 +111,6 @@ def favorites():
     user_id = session["user_id"]
 
     favorites = db.execute("SELECT recipe_name, url FROM recipes WHERE id IN (SELECT DISTINCT recipe_id FROM favorites WHERE user_id = ?)", user_id)
-    print(favorites)
     return(render_template("favorites.html", favorites=favorites))
 
 @app.route("/add_favorites", methods=["GET", "POST"])

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Restaurants
+{% endblock %}
+
+{% block main %}
+<form action="/restaurants" method="post">
+    <div class="mb-3">
+        <select autocomplete="off" autofocus class="form-control mx-auto w-auto" id="cuisine" name="cuisine" placeholder="Restaurant Cuisine" type="text">
+            <option disabled selected>What type of restaurant do you want?</option>
+            <option>Any cuisine</option>
+            {% for cuisine in cuisines %}
+                <option>{{ cuisine['cuisine'] }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">🍴 Find Restaurants! 🍴</button>
+</form>
+
+{% endblock %}

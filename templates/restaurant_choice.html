@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Restaurants
+{% endblock %}
+
+{% block main %}
+<h1>{{ cuisine }} Restaurants</h1>
+
+{% for restaurant in restaurants %}
+    <a href="{{ restaurant['url'] }}">{{ restaurant['restaurant_name'] }}</a>
+    <img src="/static/{{ restaurant['photo'] }}" alt="{{ restaurant['restaurant_name'] }}" style="width:48px;height:48px;">
+{% endfor %}
+
+{% endblock %}
