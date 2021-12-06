@@ -104,7 +104,6 @@ def find_recipes():
                     if recipe in all_recipes:
                         all_recipes.remove(recipe)
 
-        print(all_recipes)
         if all_recipes == []:
             return(apology("No recipes found. Try adding more ingredients!"))
 
@@ -115,17 +114,8 @@ def find_recipes():
     else:
         
         # Select all ingredients from SQL database
-        all_ingredients_raw = db.execute("SELECT ingredient_name FROM ingredients")
+        all_ingredients = db.execute("SELECT ingredient_name FROM ingredients")
         
-        # Initialize empty list
-        all_ingredients = []
-
-        # Iterate through each item in raw ingredient list
-        for ingredient in all_ingredients_raw:
-            
-            # Add each ingredient to ingredients list, extracting value from dictionary
-            all_ingredients.append(ingredient['ingredient_name'])
-
         # Render recipes template, passing ingredients
         return(render_template("recipes.html", ingredients=all_ingredients))
 
